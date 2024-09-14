@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw Circles on Canvas</title>
+    <style>
+        canvas {
+            border: 2px solid black;
+            background-image: url("pic.jpg");
+        }
+        body {
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+<body>
+
+    <h3>Choose Your Circle Settings:</h3>
+    
+    <!-- Inputs for Color, Radius, and Line Width -->
+    <label for="color">Color: </label>
+    <input type="color" id="color" value="#0000ff"><br><br>
+    
+    <label for="radius">Radius: </label>
+    <input type="number" id="radius" value="20" min="1"><br><br>
+    
+    <label for="width">Line Width: </label>
+    <input type="number" id="width" value="2" min="1"><br><br>
+
+    <canvas id="myCanvas" width="1500" height="500"></canvas>
+
+    <script>
+        // Get the canvas and context
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+
+        var drawing = false;
+
+        // Function to start drawing circles when mouse is clicked
+        canvas.addEventListener("mousedown", function(e) {
+            drawing = true;
+            drawCircle(e);  // Draw a circle on the initial click
+        });
+
+        // Function to stop drawing when the mouse is released
+        canvas.addEventListener("mouseup", function(e) {
+            drawing = false;
+        });
+
+        // Function to draw a circle when the mouse is moved, but only if drawing is true
+        canvas.addEventListener("mousemove", function(e) {
+            if (drawing) {
+                drawCircle(e);
+            }
+        });
+
+        // Function to draw a circle at the current mouse position
+        function drawCircle(e) {
+            // Get values from input fields
+            var color = document.getElementById("color").value;
+            var radius = document.getElementById("radius").value;
+            var width_of_line = document.getElementById("width").value;
+
+            var rect = canvas.getBoundingClientRect();
+            var x = e.clientX - rect.left;
+            var y = e.clientY - rect.top;
+
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);  // Draw circle with user-selected radius
+            ctx.fillStyle = color;  // Fill color for the circle
+            ctx.fill();
+            ctx.lineWidth = width_of_line;  // Line width for the circle's border
+            ctx.strokeStyle = color;  // Border color for the circle
+            ctx.stroke();
+            ctx.closePath();
+        }
+    </script>
+
+</body>
+</html>
